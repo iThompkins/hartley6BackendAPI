@@ -6,7 +6,6 @@ class User < ApplicationRecord
 
   after_create :update_access_token!  
 
-  validates :username, presence: true
   validates :email, presence: true
 
   private

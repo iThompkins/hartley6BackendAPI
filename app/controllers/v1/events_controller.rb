@@ -25,10 +25,11 @@ module V1
     end
 
     def destroy
-    	@ev = Event.where(params[:eventId]).first
+    	@ev = Event.find_by_id(params[:eventId])
     	if @ev.user_id = params[:userId]
     		@ev.destroy
     	end
+    	render json: Event.all
     end
 
     def index

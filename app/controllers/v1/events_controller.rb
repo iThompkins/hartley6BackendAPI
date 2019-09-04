@@ -34,7 +34,7 @@ module V1
 
     def destroy
     	@ev = Event.find_by_id(params[:eventId])
-    	if @ev.user_id = params[:userId]
+    	if @ev.user_id = params[:userId] || User.find_by_id(params[:userId]).admin
     		@ev.destroy
     	end
     	render json: Event.all

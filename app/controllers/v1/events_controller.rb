@@ -5,7 +5,7 @@ module V1
 
     def create
     	u = User.where(id: params[:userId]).first
-    	if u && u.access_token == params[:authToken]
+    	if u && u.access_token == params[:authToken] && u.admin
 	    	@ev = Event.create(
 	    										user_id: u.id,
 	    										title: params[:title],
@@ -14,6 +14,10 @@ module V1
 	    										availability: params[:availability],
 	    										category: params[:category]
 	    										)
+	    	group = Group.create(event_id: @ev.id)
+	    	if group.save 
+	    		group.members << u.email
+	    	end
 	    	if @ev.save
 	    		render json: @ev
 	    	end
@@ -21,7 +25,11 @@ module V1
     end
 
     def update
-
+    	@ev = Event.find_by_id(params[:eventId])
+    	group = @ev.group
+    	group.members << User.find_by_id(params[:userId]).email 
+    	group.save
+    	render json: Event.all
     end
 
     def destroy
@@ -31,6 +39,8 @@ module V1
     	end
     	render json: Event.all
     end
+
+
 
     def index
     	render json: Event.all

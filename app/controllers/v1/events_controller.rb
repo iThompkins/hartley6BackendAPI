@@ -31,9 +31,11 @@ module V1
     		group.members << User.find_by_id(params[:userId]).email
     		group.save
     		@ev.availability -= 1
-    	render json: Event.all
+    		@ev.save
+    		render json: Event.all
+    	else
+      	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     	end 
-      render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     end
 
     def destroy

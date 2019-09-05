@@ -27,9 +27,13 @@ module V1
     def update
     	@ev = Event.find_by_id(params[:eventId])
     	group = @ev.group
-    	group.members << User.find_by_id(params[:userId]).email 
-    	group.save
+    	if @ev.availability > 0 && !group.members.include?(User.find_by_id(params[:userId]).email)
+    		group.members << User.find_by_id(params[:userId]).email
+    		group.save
+    		@ev.availability -= 1
     	render json: Event.all
+    	end 
+      render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     end
 
     def destroy

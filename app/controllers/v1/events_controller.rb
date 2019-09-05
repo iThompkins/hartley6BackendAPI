@@ -19,6 +19,8 @@ module V1
 	    		group.members << u.email
 	    	end
 	    	if @ev.save
+	    		u.coins += 40
+	    		u.save
 	    		render json: @ev
 	    	end
 	    end
@@ -27,11 +29,15 @@ module V1
     def update
     	@ev = Event.find_by_id(params[:eventId])
     	group = @ev.group
+    	u = User.find_by_id(params[:userId])
     	if @ev.availability > 0 && !group.members.include?(User.find_by_id(params[:userId]).email)
-    		group.members << User.find_by_id(params[:userId]).email
+    		group.members << u.email
     		group.save
     		@ev.availability -= 1
     		@ev.save
+    		u.coins += 20
+    		u.save
+    		UserJoinMailer.joined(u.email)
     		render json: Event.all
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity

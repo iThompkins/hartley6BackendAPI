@@ -37,7 +37,8 @@ module V1
     		@ev.save
     		u.coins += 20
     		u.save
-    		UserJoinMailer.joined(u.email)
+    		UserJoinMailer.joined(u.email, @ev.user.email)
+            UserJoinMailer.joined_reminder(u.email, @ev)
     		render json: Event.all
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity

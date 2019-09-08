@@ -40,6 +40,7 @@ module V1
     		UserJoinMailer.joined(u.email, @ev.user.email)
             UserJoinMailer.joined_reminder(u.email, @ev)
     		render json: Event.all
+            puts 'joined'
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     	end 

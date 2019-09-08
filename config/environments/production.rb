@@ -4,10 +4,19 @@ Rails.application.configure do
   #CHANGE LINE BELOW FOR PRODUCTION TO PRODUCTION default_url_options
   #config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-
+  config.action_mailer.delivery_method = :smtp
   # Code is not reloaded between requests.
   config.cache_classes = true
-
+  config.action_mailer.default_url_options = { host: "https://suspicious-mahavira-fd689f.netlify.com/" }
+    ActionMailer::Base.smtp_settings = {
+    :user_name => Rails.application.credentials.SENDGRID_USERNAME,
+    :password => Rails.application.credentials.SENDGRID_PASSWORD,
+    :domain => 'heroku.com',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.

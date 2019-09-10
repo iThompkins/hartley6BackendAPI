@@ -7,7 +7,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   # Code is not reloaded between requests.
   config.cache_classes = true
-  config.action_mailer.default_url_options = { host: "https://suspicious-mahavira-fd689f.netlify.com/" }
+  config.action_mailer.default_url_options = { host: "https://hartley6.netlify.com/" }
     ActionMailer::Base.smtp_settings = {
     :user_name => Rails.application.credentials.SENDGRID_USERNAME,
     :password => Rails.application.credentials.SENDGRID_PASSWORD,

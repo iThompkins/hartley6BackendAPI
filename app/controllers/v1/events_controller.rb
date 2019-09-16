@@ -21,7 +21,7 @@ module V1
 	    	if @ev.save
 	    		u.coins += 40
 	    		u.save
-	    		render json: @ev
+	    		render json: Event.all.order("time DESC")
 	    	end
 	    end
     end

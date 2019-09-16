@@ -12,6 +12,6 @@ class UserJoinMailer < ApplicationMailer
 		@joiner_email = joiner_email
 		@getter_email = getter_email
 		mail( :to => @joiner_email,
-    	:subject => 'Reminder to go to event!' )
+    	:subject => 'Reminder to go to event! (Be sure to add it to your GCal)' )
 	end
 end

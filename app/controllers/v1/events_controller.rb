@@ -57,7 +57,7 @@ module V1
 
 
     def index
-    	render json: Event.all.order("created_at DESC")
+    	render json: Event.all.order("time DESC")
     end
 
   end

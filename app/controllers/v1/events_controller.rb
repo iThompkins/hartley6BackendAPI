@@ -39,7 +39,7 @@ module V1
     		u.save
     		UserJoinMailer.joined(u.email, @ev.user.email)
             UserJoinMailer.joined_reminder(u.email, @ev)
-    		render json: Event.all
+    		render json: Event.all.order("time DESC")
             puts 'joined'
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
@@ -51,7 +51,7 @@ module V1
     	if @ev.user_id = params[:userId] || User.find_by_id(params[:userId]).admin
     		@ev.destroy
     	end
-    	render json: Event.all
+    	render json: Event.all.order("time DESC")
     end
 
 

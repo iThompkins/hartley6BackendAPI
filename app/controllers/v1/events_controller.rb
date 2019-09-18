@@ -37,8 +37,8 @@ module V1
     		@ev.save
     		u.coins += 20
     		u.save
-    		UserJoinMailer.joined(u.email, @ev.user.email)
-            UserJoinMailer.joined_reminder(u.email, @ev)
+    		UserJoinMailer.joined(u.email, @ev.user.email).deliver
+            UserJoinMailer.joined_reminder(u.email, @ev).deliver
     		render json: Event.all.order("time DESC")
             puts 'joined'
     	else

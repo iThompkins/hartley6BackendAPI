@@ -9,10 +9,10 @@ Rails.application.configure do
   config.cache_classes = true
   config.action_mailer.default_url_options = { host: "https://hartley6.netlify.com/" }
     ActionMailer::Base.smtp_settings = {
-    :user_name => Rails.application.credentials.SENDGRID_USERNAME,
-    :password => Rails.application.credentials.SENDGRID_PASSWORD,
+    :user_name => Rails.application.credentials.gmail_username,
+    :password => Rails.application.credentials.gmail_password,
     :domain => 'heroku.com',
-    :address => 'smtp.sendgrid.net',
+    :address => 'smtp.gmail.com',
     :port => 587,
     :authentication => :plain,
     :enable_starttls_auto => true

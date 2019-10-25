@@ -28,7 +28,7 @@ module V1
 
     def update
     	@ev = Event.find_by_id(params[:eventId])
-    	group = @ev.group
+    	group = @ev.group if @ev
     	u = User.find_by_id(params[:userId])
     	if @ev.availability > 0 && !group.members.include?(User.find_by_id(params[:userId]).email)
     		group.members << u.email
@@ -40,7 +40,6 @@ module V1
     		UserJoinMailer.joined(u.email, @ev.user.email).deliver
             UserJoinMailer.joined_reminder(u.email, @ev).deliver
     		render json: Event.all.order("time DESC")
-            puts 'joined'
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     	end 

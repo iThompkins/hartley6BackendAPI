@@ -9,13 +9,11 @@ class ApplicationController < ActionController::API
   # User Authentication
   # Authenticates the user with OAuth2 Resource Owner Password Credentials Grant
   def authenticate_user_from_token!
-    puts request.headers['authToken']
     auth_token = request.headers['authToken']
 
     if auth_token
       authenticate_with_auth_token auth_token
     else
-      puts request
       authentication_error 
     end
   end
@@ -44,7 +42,6 @@ class ApplicationController < ActionController::API
   # Renders a 401 error
   def authentication_error 
     # User's token is either invalid or not in the right format
-    puts params
     render json: {error: t('unauthorized')}, status: 401  # Authentication timeout
   end
 end

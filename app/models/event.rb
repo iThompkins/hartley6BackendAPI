@@ -6,5 +6,6 @@ class Event < ApplicationRecord
 	validates :availability, presence: true
 
 	belongs_to :user
+	has_many :likes, dependent: :destroy
 	has_one :group
 end

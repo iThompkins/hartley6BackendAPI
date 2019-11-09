@@ -13,7 +13,6 @@ module V1
 
       if @user.valid_password?(params[:password])
         sign_in :user, @user
-        puts json: @user
         render json: @user, serializer: SessionSerializer, root: nil
       else
         invalid_login_attempt

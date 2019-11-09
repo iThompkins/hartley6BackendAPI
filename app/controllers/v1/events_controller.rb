@@ -1,7 +1,7 @@
 module V1
   class EventsController < ApplicationController
-    skip_before_action :authenticate_user_from_token!
-
+    skip_before_action :authenticate_user_from_token!, only: :index
+    before_action :find_event, only: :like
 
     def create
     	u = User.where(id: params[:userId]).first
@@ -21,7 +21,8 @@ module V1
 	    	if @ev.save
 	    		u.coins += 40
 	    		u.save
-	    		render json: Event.all.order("time DESC")
+          evs = Event.where("time >= ?", Time.now)
+          render json: evs.order(:time)
 	    	end
 	    end
     end
@@ -38,8 +39,8 @@ module V1
     		u.coins += 20
     		u.save
     		UserJoinMailer.joined(u.email, @ev.user.email).deliver
-            UserJoinMailer.joined_reminder(u.email, @ev).deliver
-    		render json: Event.all.order("time DESC")
+        UserJoinMailer.joined_reminder(u.email, @ev).deliver
+    		render json: Event.where("time >= ?", Time.now)
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     	end 
@@ -53,11 +54,64 @@ module V1
     	render json: Event.all.order("time DESC")
     end
 
-
-
     def index
-    	render json: Event.all.order("time DESC")
+      evs = Event.where("time >= ?", Time.now)
+      events = []
+      if params[:tags].length > 0
+        params[:tags].each do |t|
+          evs.each do |ev|
+            if ev.tags.include?(t)
+              events << ev
+            end
+          end
+        end
+        render json: events.sort_by(&:time)
+      else
+        events = Event.where("time >= ?", Time.now)
+        render json: events.order(:time)
+      end
     end
+
+    def userLikes?
+      if already_liked?
+        puts Event.find(params[:event_id])
+        render json: Event.find(params[:event_id]).likes
+      end
+    end
+
+    def like
+      unless already_liked?
+        @event.likes.create(user_id: current_user.id)
+        if @event.save
+          render json: @event.likes
+        end
+      else
+        render json: {error: t('events_controller.already_liked')}, status: :unprocessable_entity
+      end 
+    end
+
+    def unlike
+      if already_liked?
+        l = Like.find_by(event_id: params[:event_id])
+        l.destroy
+        render json: Event.find(params[:event_id]).likes
+      else
+        render json: {error: t('events_controller.couldnt_unlike')}, status: :unprocessable_entity
+      end
+    end
+
+
+    private
+
+    def find_event
+       @event = Event.find(params[:event_id])
+    end
+
+    def already_liked?
+      Like.where(user_id: current_user.id, event_id:
+      params[:event_id]).exists?
+    end
+
 
   end
 end

@@ -4,27 +4,24 @@ module V1
     before_action :find_event, only: :like
 
     def create
-    	u = User.where(id: params[:userId]).first
-    	if u && u.access_token == params[:authToken] && u.admin
-	    	@ev = Event.create(
-	    										user_id: u.id,
-	    										title: params[:title],
-	    										host: params[:host],
-	    										time: params[:time],
-	    										availability: params[:availability],
-	    										category: params[:category]
-	    										)
-	    	group = Group.create(event_id: @ev.id)
-	    	if group.save 
-	    		group.members << u.email
-	    	end
-	    	if @ev.save
-	    		u.coins += 40
-	    		u.save
-          evs = Event.where("time >= ?", Time.now)
-          render json: evs.order(:time)
-	    	end
-	    end
+    	@ev = Event.create(
+    										user_id: current_user.id,
+    										title: params[:title],
+    										host: params[:host],
+    										time: params[:time],
+    										availability: params[:availability],
+    										category: params[:category]
+    										)
+    	group = Group.create(event_id: @ev.id)
+    	if group.save 
+    		group.members << u.email
+    	end
+    	if @ev.save
+    		u.coins += 40
+    		u.save
+        evs = Event.where("time >= ?", Time.now)
+        render json: evs.order(:time)
+    	end
     end
 
     def update

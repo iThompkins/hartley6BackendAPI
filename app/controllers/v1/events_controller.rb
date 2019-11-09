@@ -14,11 +14,11 @@ module V1
     										)
     	group = Group.create(event_id: @ev.id)
     	if group.save 
-    		group.members << u.email
+    		group.members << current_user.email
     	end
     	if @ev.save
-    		u.coins += 40
-    		u.save
+    		current_user.coins += 40
+    		current_user.save
         evs = Event.where("time >= ?", Time.now)
         render json: evs.order(:time)
     	end

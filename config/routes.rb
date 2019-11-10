@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     post '/event/event_like' => 'events#userLikes?'
     post '/events' => 'events#index'
     post '/event/like' => 'events#like'
+    post '/event/group' => 'events#getGroup'
     delete '/event/unlike' => 'events#unlike'
   end
 end

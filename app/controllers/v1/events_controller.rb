@@ -37,7 +37,7 @@ module V1
     		u.save
     		UserJoinMailer.joined(u.email, @ev.user.email).deliver
         UserJoinMailer.joined_reminder(u.email, @ev).deliver
-    		render json: Event.where("time >= ?", Time.now)
+    		render json: Event.where("time >= ?", Time.now).order(:time)
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity
     	end 
@@ -69,9 +69,17 @@ module V1
       end
     end
 
+    def getGroup
+      ev = Event.find(params[:event_id])
+      members = []
+      ev.group.members.each do |m|
+        members << User.find_by(email: m)
+      end
+      render json: members
+    end
+
     def userLikes?
       if already_liked?
-        puts Event.find(params[:event_id])
         render json: Event.find(params[:event_id]).likes
       end
     end

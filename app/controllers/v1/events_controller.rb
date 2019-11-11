@@ -8,15 +8,16 @@ module V1
     										user_id: current_user.id,
     										title: params[:title],
     										host: params[:host],
+                        location: params[:where],
     										time: params[:time],
+                        tags: params[:tags],
     										availability: params[:availability],
-    										category: params[:category]
     										)
     	group = Group.create(event_id: @ev.id)
     	if group.save 
     		group.members << current_user.email
     	end
-    	if @ev.save
+    	if @ev.save!
     		current_user.coins += 40
     		current_user.save
         evs = Event.where("time >= ?", Time.now)

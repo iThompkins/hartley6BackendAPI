@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   devise_for :user, only: []
-
   namespace :v1, defaults: { format: :json } do
     resource :login, only: [:create], controller: :sessions
     resource :event, only: [:create, :update, :destroy], controller: :events
@@ -10,4 +9,5 @@ Rails.application.routes.draw do
     post '/event/group' => 'events#getGroup'
     delete '/event/unlike' => 'events#unlike'
   end
+  get '/terms' => 'pages#terms'
 end

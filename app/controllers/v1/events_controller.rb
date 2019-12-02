@@ -58,7 +58,7 @@ module V1
       if params[:tags].length > 0
         params[:tags].each do |t|
           evs.each do |ev|
-            if ev.tags.include?(t)
+            if ev.tags.include?(t) && !events.include?(ev)
               events << ev
             end
           end

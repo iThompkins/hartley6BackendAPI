@@ -5,8 +5,8 @@ module V1
     # POST /v1/login
     def create
       @user = User.find_for_database_authentication(email: params[:username])
-      if params[:phone]
-        @user.phone_number = params[:phone]
+      if params[:phone].length > 8
+        @user.phone = params[:phone]
         @user.save
       end
       return invalid_login_attempt unless @user

@@ -25,6 +25,7 @@ gem 'sendgrid-ruby'
 gem 'active_model_serializers', '~> 0.8.3'
 gem 'devise'
 gem 'devise-jwt'
+gem 'twilio-ruby'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

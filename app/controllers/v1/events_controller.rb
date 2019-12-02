@@ -14,9 +14,6 @@ module V1
     										availability: params[:availability],
     										)
     	group = Group.create(event_id: @ev.id)
-    	if group.save 
-    		group.members << current_user.email
-    	end
     	if @ev.save!
     		current_user.coins += 40
     		current_user.save
@@ -38,6 +35,7 @@ module V1
     		u.save
     		UserJoinMailer.joined(u.email, @ev.user.email).deliver
         UserJoinMailer.joined_reminder(u.email, @ev).deliver
+        EventEmailJob.set(wait_until: @ev.time.to_time.yesterday).perform_later(u.email)
     		render json: Event.where("time >= ?", Time.now).order(:time)
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity

@@ -32,7 +32,7 @@ module V1
     		group.save
     		@ev.availability -= 1
     		@ev.save
-    		@u.coins += 20
+    		#@u.coins += 20
         @u.save
     	#	UserJoinMailer.joined(u.email, @ev.user.email).deliver
        # UserJoinMailer.joined_reminder(u.email, @ev).deliver

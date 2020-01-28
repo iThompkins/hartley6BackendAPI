@@ -35,7 +35,7 @@ module V1
     		@u.coins += 20
         @u.save
     		UserJoinMailer.joined(u.email, @ev.user.email).deliver
-        UserJoinMailer.joined_reminder(u.email, @ev).deliver
+        UserJoinMailer.joined_reminder(@u.email, @ev).deliver
         EventEmailJob.set(wait_until: @ev.time.to_time.yesterday).perform_later(u.email, @ev)
     		render json: Event.where("time >= ?", Time.now).order(:time)
     	else

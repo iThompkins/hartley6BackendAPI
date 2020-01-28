@@ -25,14 +25,14 @@ module V1
     def update
     	@ev = Event.find_by_id(params[:eventId])
     	group = @ev.group if @ev
-      u = User.find_by_id(params[:userId])
+      @u = User.find_by_id(params[:userId])
     	if @ev.availability > 0 
     		#group.members << u.email if !group.members.include?(u.email)
     		group.save
     		@ev.availability -= 1
     		@ev.save
-    		u.coins += 20
-        u.save
+    		@u.coins += 20
+        @u.save
     	#	UserJoinMailer.joined(u.email, @ev.user.email).deliver
        # UserJoinMailer.joined_reminder(u.email, @ev).deliver
         #EventEmailJob.set(wait_until: @ev.time.to_time.yesterday).perform_later(u.email, @ev)

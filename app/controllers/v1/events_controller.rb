@@ -28,7 +28,7 @@ module V1
       @u = User.find_by_id(params[:userId])
       if @ev.availability > 0 && @u
         @u = User.find_by_id(params[:userId])
-    		group.members << u.email if !group.members.include?(u.email)
+    		group.members << @u.email if !group.members.include?(@u.email)
     		group.save
     		@ev.availability -= 1
     		@ev.save

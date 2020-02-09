@@ -25,18 +25,16 @@ module V1
     def update
     	@ev = Event.find_by_id(params[:eventId])
     	group = @ev.group if @ev
-      @u = User.find_by_id(params[:userId])
-      if @ev.availability > 0 && @u
-        @u = User.find_by_id(params[:userId])
-    		group.members << @u.email if !group.members.include?(@u.email)
+      if @ev.availability > 0 && current_user
+    		group.members << current_user.email if !group.members.include?(current_user.email)
     		group.save
     		@ev.availability -= 1
     		@ev.save
-    		@u.coins += 20
-        @u.save
-    		UserJoinMailer.joined(@u.email, @ev.user.email).deliver
-        UserJoinMailer.joined_reminder(@u.email, @ev).deliver
-        EventEmailJob.set(wait_until: @ev.time.to_time.yesterday).perform_later(@u.email, @ev)
+    		current_user.coins += 20
+        current_user.save
+    		UserJoinMailer.joined(current_user.email, @ev.user.email).deliver
+        UserJoinMailer.joined_reminder(current_user.email, @ev).deliver
+        EventEmailJob.set(wait_until: @ev.time.to_time.yesterday).perform_later(current_user.email, @ev) unless Time.now > @ev.time.to_time.yesterday
     		render json: Event.where("time >= ?", Time.now).order(:time)
     	else
       	render json: {error: t('events_controller.too_many_joins')}, status: :unprocessable_entity

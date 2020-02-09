@@ -28,9 +28,9 @@ module V1
       if @ev.availability > 0 && current_user
     		group.members << current_user.email if !group.members.include?(current_user.email)
     		group.save
-    		@ev.availability -= 1
+    		@ev.availability -= 1 unless group.members.include?(current_user.email)
     		@ev.save
-    		current_user.coins += 20
+    		current_user.coins += 20 unless group.members.include?(current_user.email)
         current_user.save
     		UserJoinMailer.joined(current_user.email, @ev.user.email).deliver
         UserJoinMailer.joined_reminder(current_user.email, @ev).deliver
@@ -95,8 +95,8 @@ module V1
 
     def unlike
       if already_liked?
-        l = Like.find_by(event_id: params[:event_id])
-        l.destroy
+        l = Like.where(event_id: params[:event_id], user_id: current_user.id).first
+        l.destroy unless Like.where(event_id: params[:event_id], user_id: current_user.id).first.nil?
         render json: Event.find(params[:event_id]).likes
       else
         render json: {error: t('events_controller.couldnt_unlike')}, status: :unprocessable_entity
@@ -111,8 +111,8 @@ module V1
     end
 
     def already_liked?
-      Like.where(user_id: current_user.id, event_id:
-      params[:event_id]).exists?
+      !Like.where(user_id: current_user.id, event_id:
+      params[:event_id]).first.nil?
     end
 
 

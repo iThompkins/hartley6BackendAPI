@@ -1,8 +1,8 @@
 class Event < ApplicationRecord
-	validates :title, presence: true, length: { maximum: 25 }
-	validates :host, presence: true, length: { maximum: 25 }
-	validates :time, presence: true, length: { maximum: 25 }
-	validates :location, presence: true, length: { maximum: 25 }
+	validates :title, presence: true
+	validates :host, presence: true
+	validates :time, presence: true
+	validates :location, presence: true
 	validates :availability, presence: true
 
 	belongs_to :user

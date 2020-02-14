@@ -11,7 +11,8 @@ module V1
                         location: params[:where],
     										time: params[:time],
                         tags: params[:tags],
-    										availability: params[:availability],
+                        availability: params[:availability],
+                        description: params[:description]
     										)
     	group = Group.create(event_id: @ev.id)
     	if @ev.save!

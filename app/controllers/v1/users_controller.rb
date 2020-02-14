@@ -6,7 +6,7 @@ module V1
       user = User.find_by_email(params[:email])
       if user.valid_password?(params[:password])
         puts 'changes began'
-        user.update_attributes(password: params[:confirmPassword], phone: params[:phone])
+        user.update_attributes(password: params[:confirmPassword], phone: params[:phone], first_name: params[:firstName], last_name: params[:lastName])
       end
       if user.save
         puts json: user
@@ -18,7 +18,7 @@ module V1
     end
 
     def create
-      u = User.create(email: params[:email], password: params[:password], phone: params[:phone])
+      u = User.create(email: params[:email], password: params[:password], phone: params[:phone], first_name: params[:firstName], last_name: params[:lastName])
       if u.save
         sign_in u
         render json: u     

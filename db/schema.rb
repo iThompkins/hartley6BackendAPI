@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_01_220618) do
+ActiveRecord::Schema.define(version: 2020_02_14_023100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2019_12_01_220618) do
     t.integer "user_id"
     t.string "tags", default: [], array: true
     t.string "location"
+    t.string "description"
   end
 
   create_table "groups", force: :cascade do |t|

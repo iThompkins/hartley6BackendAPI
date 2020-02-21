@@ -43,8 +43,8 @@ module V1
     end
 
     def destroy
-    	@ev = Event.find_by_id(params[:eventId])
-    	if @ev.user_id = params[:userId] || User.find_by_id(params[:userId]).email == "yd2473@columbia.edu" || User.find_by_id(params[:userId]).email == "isaiah_thompkins@alumni.brown.edu"
+    	@ev = Event.find(params[:event_id])
+    	if @ev.user_id = current_user.id || current_user.admin
     		@ev.destroy
     	end
     	render json: Event.all.order("time DESC")

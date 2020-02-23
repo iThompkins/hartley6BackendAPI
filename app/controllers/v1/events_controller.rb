@@ -26,12 +26,12 @@ module V1
     def update
     	@ev = Event.find_by_id(params[:eventId])
     	group = @ev.group if @ev
-      if @ev.availability > 0 && current_user
-    		group.members << current_user.email if !group.members.include?(current_user.email)
+      if @ev.availability > 0 && current_user && !group.members.include?(current_user.email)
+    		group.members << current_user.email
     		group.save
-    		@ev.availability -= 1 unless group.members.include?(current_user.email)
+    		@ev.availability -= 1
     		@ev.save
-    		current_user.coins += 20 unless group.members.include?(current_user.email)
+    		current_user.coins += 20
         current_user.save
     		UserJoinMailer.joined(current_user.email, @ev.user.email).deliver
         UserJoinMailer.joined_reminder(current_user.email, @ev).deliver

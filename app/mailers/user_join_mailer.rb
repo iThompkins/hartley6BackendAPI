@@ -1,5 +1,5 @@
 class UserJoinMailer < ApplicationMailer
-	default :from => 'yd2473@columbia.edu'
+	default :from => 'theeventoapp@gmail.com'
 
 	def joined(joiner_email, getter_email)
 		@joiner_email = joiner_email

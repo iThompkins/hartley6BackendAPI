@@ -1,5 +1,5 @@
 class ReminderMailer < ApplicationMailer
-	default :from => 'yd2473@columbia.edu'
+	default :from => 'theeventoapp@gmail.com'
 
 	def baseEmail(email, ev)
 		@event = ev
